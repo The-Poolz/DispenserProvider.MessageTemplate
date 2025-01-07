@@ -1,1 +1,1 @@
-# DispenserProvider.SignatureTemplate
+# DispenserProvider.MessageTemplate

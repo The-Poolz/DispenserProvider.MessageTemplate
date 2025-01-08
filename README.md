@@ -5,7 +5,12 @@ In the DispenserProvider system, a key requirement is for an administrator to si
 ## Templates
 
 ### Create asset (With Refund)
-We build the scheme dynamically, based on the presence or absence of **Refund**. If **Refund** is available, the diagram will look like this:
+
+
+We build the scheme dynamically, based on the presence or absence of **Refund**.
+> **Note:** It is also important to note that EIP712 does not support nullable/optional parameters, so in `schedules` for `finishTime` we set `0` if it is missing.
+
+If **Refund** is available, the diagram will look like this:
 ```js
 const typedData = {
   types: {
@@ -82,8 +87,6 @@ const typedData = {
   },
 };
 ```
-In the example above you can surprise the circuit if Refund is available.
-It is also important to note that EIP712 does not support nullable/optional parameters, so in `schedules` for `finishTime` we set `0` if it is missing.
 
 ### Create asset (Without Refund)
 If **Refund** is missing, the diagram will look like this:

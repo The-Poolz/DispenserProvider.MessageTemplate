@@ -1,39 +1,150 @@
 # DispenserProvider.MessageTemplate
 
 In the DispenserProvider system, a key requirement is for an administrator to sign any creation or deletion operation with their wallet.
-This ensures the authenticity and integrity of all such actions.
-This repository provides a template that simplifies the process for both Back-end and Front-end teams by “reconstructing” the original message the administrator signed, leveraging the Handlebars library for rendering.
 
-## Template
+## Templates
 
+### With Refund
+We build the scheme dynamically, based on the presence or absence of **Refund**. If **Refund** is available, the diagram will look like this:
+```js
+const typedData = {
+  types: {
+    EIP712Domain: [{ name: "name", type: "string" }],
+    SignMessage: [
+      { name: "chainId", type: "uint256" },
+      { name: "poolId", type: "uint256" },
+      { name: "schedules", type: "Schedule[]" },
+      { name: "users", type: "User[]" },
+      { name: "refund", type: "Refund" },
+    ],
+    Schedule: [
+      { name: "providerAddress", type: "address" },
+      { name: "ratio", type: "uint256" },
+      { name: "startTime", type: "uint256" },
+      { name: "finishTime", type: "uint256" },
+    ],
+    User: [
+      { name: "userAddress", type: "address" },
+      { name: "weiAmount", type: "uint256" },
+    ],
+    Refund: [
+      { name: "chainId", type: "uint256" },
+      { name: "poolId", type: "uint256" },
+      { name: "ratio", type: "uint256" },
+      { name: "dealProvider", type: "address" },
+      { name: "finishTime", type: "uint256" },
+    ],
+  },
+  primaryType: "SignMessage",
+  domain: {
+    name: "Poolz - Create dispenser",
+  },
+  message: {
+    chainId: 1,
+    poolId: 1,
+    schedules: [
+      {
+        providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+        ratio: "500000000000000000",
+        startTime: 1763486000,
+        finishTime: 0,
+      },
+      {
+        providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+        ratio: "300000000000000000",
+        startTime: 1763586000,
+        finishTime: 0,
+      },
+      {
+        providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+        ratio: "200000000000000000",
+        startTime: 1763486000,
+        finishTime: 1763758800,
+      },
+    ],
+    users: [
+      {
+        userAddress: "0x0000000000000000000000000000000000000001",
+        weiAmount: "50000000000000000000",
+      },
+      {
+        userAddress: "0x0000000000000000000000000000000000000002",
+        weiAmount: "25000000000000000000",
+      },
+    ],
+    refund: {
+      chainId: 56,
+      poolId: 1,
+      ratio: "800000000000000000",
+      dealProvider: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+      finishTime: 1763544530,
+    },
+  },
+};
 ```
-## Withdrawn Information:
-ChainId: {{ChainId}}
-PoolId: {{PoolId}}
-Schedules:
-{{#each Schedules}}
-  - ProviderAddress: {{ProviderAddress}}
-    Ratio: {{Ratio}}
-    StartTime: {{StartTime}}
-    {{#if FinishTime}}
-    FinishTime: {{FinishTime}}
-    {{/if}}
-	
-{{/each}}
+In the example above you can surprise the circuit if Refund is available.
+It is also important to note that EIP712 does not support nullable/optional parameters, so in `schedules` for `finishTime` we set `0` if it is missing.
 
-{{#if Refund}}
-## Refund Information:
-ChainId: {{Refund.ChainId}}
-PoolId: {{Refund.PoolId}}
-Ratio: {{Refund.Ratio}}
-DealProvider: {{Refund.DealProvider}}
-FinishTime: {{Refund.FinishTime}}
-{{/if}}
-
-## Users:
-{{#each Users}}
-  - Address: {{UserAddress}}
-    WeiAmount: {{WeiAmount}}
-
-{{/each}}
+### Without Refund
+If **Refund** is missing, the diagram will look like this:
+```js
+const typedData = {
+  types: {
+    EIP712Domain: [{ name: "name", type: "string" }],
+    SignMessage: [
+      { name: "chainId", type: "uint256" },
+      { name: "poolId", type: "uint256" },
+      { name: "schedules", type: "Schedule[]" },
+      { name: "users", type: "User[]" },
+    ],
+    Schedule: [
+      { name: "providerAddress", type: "address" },
+      { name: "ratio", type: "uint256" },
+      { name: "startTime", type: "uint256" },
+      { name: "finishTime", type: "uint256" },
+    ],
+    User: [
+      { name: "userAddress", type: "address" },
+      { name: "weiAmount", type: "uint256" },
+    ],
+  },
+  primaryType: "SignMessage",
+  domain: {
+    name: "Poolz - Create dispenser",
+  },
+  message: {
+    chainId: 1,
+    poolId: 1,
+    schedules: [
+      {
+        providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+        ratio: "500000000000000000",
+        startTime: 1763486000,
+        finishTime: 0,
+      },
+      {
+        providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+        ratio: "300000000000000000",
+        startTime: 1763586000,
+        finishTime: 0,
+      },
+      {
+        providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+        ratio: "200000000000000000",
+        startTime: 1763486000,
+        finishTime: 1763758800,
+      },
+    ],
+    users: [
+      {
+        userAddress: "0x0000000000000000000000000000000000000001",
+        weiAmount: "50000000000000000000",
+      },
+      {
+        userAddress: "0x0000000000000000000000000000000000000002",
+        weiAmount: "25000000000000000000",
+      },
+    ],
+  },
+};
 ```

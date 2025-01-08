@@ -6,7 +6,6 @@ In the DispenserProvider system, a key requirement is for an administrator to si
 
 ### Create asset (With Refund)
 
-
 We build the scheme dynamically, based on the presence or absence of **Refund**.
 > **Note:** It is also important to note that EIP712 does not support nullable/optional parameters, so in `schedules` for `finishTime` we set `0` if it is missing.
 
@@ -147,6 +146,33 @@ const typedData = {
         userAddress: "0x0000000000000000000000000000000000000002",
         weiAmount: "25000000000000000000",
       },
+    ],
+  },
+};
+```
+
+### Delete asset
+
+```js
+const typedData = {
+  types: {
+    EIP712Domain: [{ name: "name", type: "string" }],
+    SignMessage: [
+      { name: "chainId", type: "uint256" },
+      { name: "poolId", type: "uint256" },
+      { name: "users", type: "address[]" },
+    ],
+  },
+  primaryType: "SignMessage",
+  domain: {
+    name: "Poolz - Delete dispenser",
+  },
+  message: {
+    chainId: 1,
+    poolId: 1,
+    users: [
+      "0x0000000000000000000000000000000000000001",
+      "0x0000000000000000000000000000000000000002",
     ],
   },
 };

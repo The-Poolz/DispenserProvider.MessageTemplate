@@ -1,18 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Numerics;
 using Net.Web3.EthereumWallet;
-using Net.Web3.EthereumWallet.Json.Converters;
+using DispenserProvider.MessageTemplate.Models.Eip712;
 
 namespace DispenserProvider.MessageTemplate.Models.Delete;
 
-public class DeleteMessage
+public class DeleteMessage(long chainId, long poolId, EthereumAddress[] users) : AbstractMessage
 {
-    [JsonRequired]
-    public long ChainId { get; set; }
+    public BigInteger ChainId { get; } = chainId;
 
-    [JsonRequired]
-    public long PoolId { get; set; }
+    public BigInteger PoolId { get; } = poolId;
 
-    [JsonRequired]
-    [JsonConverter(typeof(EthereumAddressConverter))]
-    public EthereumAddress[] Users { get; set; } = null!;
+    public string[] Users { get; } = users.Select(x => x.Address).ToArray();
+
+    public override bool IsCreate => false;
+    public override Type[] MembersDescriptionTypes => [typeof(DeleteMessage)];
 }

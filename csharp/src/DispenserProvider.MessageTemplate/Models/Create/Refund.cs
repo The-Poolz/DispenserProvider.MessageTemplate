@@ -1,33 +1,25 @@
-﻿using Newtonsoft.Json;
+﻿using Nethereum.Util;
+using System.Numerics;
 using Net.Web3.EthereumWallet;
-using Newtonsoft.Json.Converters;
-using Net.Web3.EthereumWallet.Json.Converters;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace DispenserProvider.MessageTemplate.Models.Create;
 
 [Struct(name: "Refund")]
-public class Refund
+public class Refund(long chainId, long poolId, string ratio, EthereumAddress dealProvider, DateTime finishTime)
 {
-    [JsonRequired]
     [Parameter(type: "uint256", name: "chainId", order: 1)]
-    public long ChainId { get; set; }
+    public BigInteger ChainId { get; } = chainId;
 
-    [JsonRequired]
     [Parameter(type: "uint256", name: "poolId", order: 2)]
-    public long PoolId { get; set; }
+    public BigInteger PoolId { get; } = poolId;
 
-    [JsonRequired]
     [Parameter(type: "uint256", name: "ratio", order: 3)]
-    public decimal Ratio { get; set; }
+    public BigInteger Ratio { get; } = BigInteger.Parse(ratio);
 
-    [JsonRequired]
-    [JsonConverter(typeof(EthereumAddressConverter))]
     [Parameter(type: "address", name: "dealProvider", order: 4)]
-    public EthereumAddress DealProvider { get; set; } = null!;
+    public string DealProvider { get; } = dealProvider;
 
-    [JsonRequired]
-    [JsonConverter(typeof(UnixDateTimeConverter))]
     [Parameter(type: "uint256", name: "finishTime", order: 5)]
-    public DateTime FinishTime { get; set; }
+    public BigInteger FinishTime { get; } = finishTime.ToUnixTimestamp();
 }

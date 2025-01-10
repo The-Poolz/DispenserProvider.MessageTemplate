@@ -5,21 +5,21 @@ using DispenserProvider.MessageTemplate.Models.Validators;
 
 namespace DispenserProvider.MessageTemplate.Validators;
 
-public class AdminRequestValidator<TMessage> : AbstractValidator<AdminValidationRequest<TMessage>>
-    where TMessage : IPlainMessage
+public class AdminRequestValidator : AbstractValidator<AdminRequestValidatorSettings>
 {
     public AdminRequestValidator(AuthContext authContext, IValidator<IEnumerable<EthereumAddress>> orderValidator)
     {
+        ClassLevelCascadeMode = CascadeMode.Stop;
+
         RuleFor(request => request)
             .Must(request => IsValidAdmin(request, authContext))
-            .WithMessage(request => $"Recovered address '{request.RecoveredAddress}' is not '{request.NameOfRole}'.")
-            .DependentRules(() => {
-                RuleFor(request => request.UsersToValidateOrder)
-                    .SetValidator(orderValidator);
-            });
+            .WithMessage(request => $"Recovered address '{request.RecoveredAddress}' is not '{request.NameOfRole}'.");
+
+        RuleFor(request => request.UsersToValidateOrder)
+            .SetValidator(orderValidator);
     }
 
-    private static bool IsValidAdmin(AdminValidationRequest<TMessage> request, AuthContext authContext) => authContext.Users
+    private static bool IsValidAdmin(AdminRequestValidatorSettings request, AuthContext authContext) => authContext.Users
         .Join(
             authContext.Roles,
             user => user.RoleId,

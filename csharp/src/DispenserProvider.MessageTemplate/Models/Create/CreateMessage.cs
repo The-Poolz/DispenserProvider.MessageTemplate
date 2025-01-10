@@ -1,27 +1,24 @@
-﻿using Newtonsoft.Json;
+﻿using System.Numerics;
 using Nethereum.ABI.FunctionEncoding.Attributes;
+using DispenserProvider.MessageTemplate.Models.Eip712;
 
 namespace DispenserProvider.MessageTemplate.Models.Create;
 
 [Struct(name: "SignMessage")]
-public class CreateMessage
+public class CreateMessage(long chainId, long poolId, Schedule[] schedules, User[] users) : AbstractMessage
 {
-    [JsonRequired]
     [Parameter(type: "uint256", name: "chainId", order: 1)]
-    public long ChainId { get; set; }
+    public BigInteger ChainId { get; } = chainId;
 
-    [JsonRequired]
     [Parameter(type: "uint256", name: "poolId", order: 2)]
-    public long PoolId { get; set; }
+    public BigInteger PoolId { get; } = poolId;
 
-    [JsonRequired]
-    [Parameter(type: "Schedule[]", name: "schedules", order: 3)]
-    public Schedule[] Schedules { get; set; } = [];
+    [Parameter(type: "tuple[]", name: "schedules", order: 3, structTypeName: "Schedule[]")]
+    public Schedule[] Schedules { get; } = schedules;
 
-    [JsonRequired]
-    [Parameter(type: "User[]", name: "users", order: 4)]
-    public User[] Users { get; set; } = [];
+    [Parameter(type: "tuple[]", name: "users", order: 4, structTypeName: "User[]")]
+    public User[] Users { get; } = users;
 
-    [Parameter(type: "Refund", name: "refund", order: 5)]
-    public Refund? Refund { get; set; }
+    public override bool IsCreate => true;
+    public override Type[] MembersDescriptionTypes => [typeof(CreateMessage), typeof(Schedule), typeof(User)];
 }

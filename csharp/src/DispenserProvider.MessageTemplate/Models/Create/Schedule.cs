@@ -1,31 +1,22 @@
-﻿using Newtonsoft.Json;
+﻿using Nethereum.Util;
+using System.Numerics;
 using Net.Web3.EthereumWallet;
-using Newtonsoft.Json.Converters;
-using Net.Web3.EthereumWallet.Json.Converters;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace DispenserProvider.MessageTemplate.Models.Create;
 
 [Struct(name: "Schedule")]
-public class Schedule
+public class Schedule(EthereumAddress providerAddress, string ratio, DateTime startDate, DateTime finishDate)
 {
-    [JsonRequired]
-    [JsonConverter(typeof(EthereumAddressConverter))]
     [Parameter(type: "address", name: "providerAddress", order: 1)]
-    public EthereumAddress ProviderAddress { get; set; } = null!;
+    public string ProviderAddress { get; } = providerAddress;
 
-    [JsonRequired]
     [Parameter(type: "uint256", name: "ratio", order: 2)]
-    public decimal Ratio { get; set; }
+    public BigInteger Ratio { get; } = BigInteger.Parse(ratio);
 
-    [JsonRequired]
-    [JsonProperty("StartTime")]
-    [JsonConverter(typeof(UnixDateTimeConverter))]
     [Parameter(type: "uint256", name: "startTime", order: 3)]
-    public DateTime StartDate { get; set; }
+    public BigInteger StartDate { get; } = startDate.ToUnixTimestamp();
 
-    [JsonConverter(typeof(UnixDateTimeConverter))]
-    [JsonProperty("FinishTime", DefaultValueHandling = DefaultValueHandling.Ignore)]
     [Parameter(type: "uint256", name: "finishTime", order: 4)]
-    public DateTime? FinishDate { get; set; }
+    public BigInteger FinishDate { get; } = finishDate.ToUnixTimestamp();
 }

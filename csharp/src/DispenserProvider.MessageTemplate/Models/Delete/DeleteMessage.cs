@@ -1,10 +1,13 @@
 ﻿using System.Numerics;
+using Nethereum.ABI.EIP712;
 using Net.Web3.EthereumWallet;
+using Nethereum.ABI.FunctionEncoding.Attributes;
 using DispenserProvider.MessageTemplate.Models.Eip712;
 
 namespace DispenserProvider.MessageTemplate.Models.Delete;
 
-public class DeleteMessage(long chainId, long poolId, EthereumAddress[] users) : AbstractMessage
+[Struct(name: "SignMessage")]
+public class DeleteMessage(long chainId, long poolId, IEnumerable<EthereumAddress> users) : AbstractMessage
 {
     public BigInteger ChainId { get; } = chainId;
 
@@ -12,6 +15,7 @@ public class DeleteMessage(long chainId, long poolId, EthereumAddress[] users) :
 
     public string[] Users { get; } = users.Select(x => x.Address).ToArray();
 
-    public override bool IsCreate => false;
-    public override Type[] MembersDescriptionTypes => [typeof(DeleteMessage)];
+    protected override bool IsCreate => false;
+    protected override Type[] MembersDescriptionTypes => [typeof(DeleteMessage)];
+    protected override MemberValue[] MembersValues => MemberValueFactory.CreateFromMessage(this);
 }

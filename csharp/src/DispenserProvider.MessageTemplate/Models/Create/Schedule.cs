@@ -6,8 +6,12 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 namespace DispenserProvider.MessageTemplate.Models.Create;
 
 [Struct(name: "Schedule")]
-public class Schedule(EthereumAddress providerAddress, string ratio, DateTime startDate, DateTime finishDate)
+public class Schedule(EthereumAddress providerAddress, string ratio, long startDate, long finishDate)
 {
+    public Schedule(EthereumAddress providerAddress, string ratio, DateTime startDate, DateTime finishDate)
+        : this(providerAddress, ratio, startDate.ToUnixTimestamp(), finishDate.ToUnixTimestamp())
+    { }
+
     [Parameter(type: "address", name: "providerAddress", order: 1)]
     public string ProviderAddress { get; } = providerAddress;
 
@@ -15,8 +19,8 @@ public class Schedule(EthereumAddress providerAddress, string ratio, DateTime st
     public BigInteger Ratio { get; } = BigInteger.Parse(ratio);
 
     [Parameter(type: "uint256", name: "startTime", order: 3)]
-    public BigInteger StartDate { get; } = startDate.ToUnixTimestamp();
+    public BigInteger StartDate { get; } = startDate;
 
     [Parameter(type: "uint256", name: "finishTime", order: 4)]
-    public BigInteger FinishDate { get; } = finishDate.ToUnixTimestamp();
+    public BigInteger FinishDate { get; } = finishDate;
 }

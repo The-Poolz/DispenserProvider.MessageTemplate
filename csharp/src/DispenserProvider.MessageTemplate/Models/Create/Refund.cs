@@ -6,8 +6,12 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 namespace DispenserProvider.MessageTemplate.Models.Create;
 
 [Struct(name: "Refund")]
-public class Refund(long chainId, long poolId, string ratio, EthereumAddress dealProvider, DateTime finishTime)
+public class Refund(long chainId, long poolId, string ratio, EthereumAddress dealProvider, long finishTime)
 {
+    public Refund(long chainId, long poolId, string ratio, EthereumAddress dealProvider, DateTime finishTime)
+        : this(chainId, poolId, ratio, dealProvider, finishTime.ToUnixTimestamp())
+    { }
+
     [Parameter(type: "uint256", name: "chainId", order: 1)]
     public BigInteger ChainId { get; } = chainId;
 
@@ -21,5 +25,5 @@ public class Refund(long chainId, long poolId, string ratio, EthereumAddress dea
     public string DealProvider { get; } = dealProvider;
 
     [Parameter(type: "uint256", name: "finishTime", order: 5)]
-    public BigInteger FinishTime { get; } = finishTime.ToUnixTimestamp();
+    public BigInteger FinishTime { get; } = finishTime;
 }

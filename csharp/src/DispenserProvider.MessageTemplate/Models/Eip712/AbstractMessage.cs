@@ -23,7 +23,7 @@ public abstract class AbstractMessage
                 PrimaryType = "SignMessage",
                 Message = MembersValues
             };
-            typedData.InitDomainRawValues();
+            typedData.EnsureDomainRawValuesAreInitialised();
             return typedData;
         }
     }

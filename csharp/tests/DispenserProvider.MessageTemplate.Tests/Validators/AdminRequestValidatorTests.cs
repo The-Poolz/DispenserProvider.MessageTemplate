@@ -4,6 +4,7 @@ using FluentValidation;
 using Net.Web3.EthereumWallet;
 using DispenserProvider.MessageTemplate.Validators;
 using DispenserProvider.MessageTemplate.Tests.Mocks;
+using DispenserProvider.MessageTemplate.Models.Eip712;
 
 namespace DispenserProvider.MessageTemplate.Tests.Validators;
 
@@ -85,13 +86,14 @@ public class AdminRequestValidatorTests
                 .WithMessage($"Validation failed: {Environment.NewLine} -- UsersToValidateOrder.OrderCheck[0]: Addresses must be in ascending order. Found '0x0000000000000000000000000000000000000002' > '0x0000000000000000000000000000000000000001' Severity: Error");
         }
 
-        [Fact]
-        internal void WhenRequestIsValid_ShouldWithoutThrownException()
+        [Theory]
+        [MemberData(nameof(Messages))]
+        internal void WhenRequestIsValid_ShouldWithoutThrownException(AbstractMessage message, IEnumerable<EthereumAddress> users)
         {
             var settings = MockAdminRequestValidatorSettings.Create(
-                message: MockMessages.CreateMessage,
+                message: message,
                 nameOfRole: MockAuthContext.Role.Name,
-                usersToValidateOrder: MockMessages.CreateMessage.Users.Select(x => new EthereumAddress(x.UserAddress)),
+                usersToValidateOrder: users,
                 privateKey: MockUsers.Admin.PrivateKey
             );
 
@@ -99,5 +101,21 @@ public class AdminRequestValidatorTests
 
             testCode.Should().NotThrow<ValidationException>();
         }
+
+        public static IEnumerable<object[]> Messages =>
+        [
+            [
+                MockMessages.CreateMessage,
+                MockMessages.CreateMessage.Users.Select(x => new EthereumAddress(x.UserAddress)).ToArray()
+            ],
+            [
+                MockMessages.CreateMessageWithRefund,
+                MockMessages.CreateMessageWithRefund.Users.Select(x => new EthereumAddress(x.UserAddress)).ToArray()
+            ],
+            [
+                MockMessages.DeleteMessage,
+                MockMessages.DeleteMessage.Users.Select(x => new EthereumAddress(x)).ToArray()
+            ],
+        ];
     }
 }

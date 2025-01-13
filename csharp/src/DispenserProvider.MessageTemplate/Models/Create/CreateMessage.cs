@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
+using Nethereum.ABI.EIP712;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 using DispenserProvider.MessageTemplate.Models.Eip712;
-using Nethereum.ABI.EIP712;
 
 namespace DispenserProvider.MessageTemplate.Models.Create;
 
@@ -15,10 +15,10 @@ public class CreateMessage(long chainId, long poolId, IEnumerable<Schedule> sche
     public BigInteger PoolId { get; } = poolId;
 
     [Parameter(type: "tuple[]", name: "schedules", order: 3, structTypeName: "Schedule[]")]
-    public List<Schedule> Schedules { get; } = schedules.ToList();
+    public Schedule[] Schedules { get; } = schedules.ToArray();
 
     [Parameter(type: "tuple[]", name: "users", order: 4, structTypeName: "User[]")]
-    public List<User> Users { get; } = users.ToList();
+    public User[] Users { get; } = users.ToArray();
 
     protected override bool IsCreate => true;
     protected override Type[] MembersDescriptionTypes => [typeof(CreateMessage), typeof(Schedule), typeof(User)];

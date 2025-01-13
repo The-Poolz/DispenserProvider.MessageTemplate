@@ -8,15 +8,23 @@ public abstract class AbstractMessage
     protected abstract Type[] MembersDescriptionTypes { get; }
     protected abstract bool IsCreate { get; }
 
-    public TypedData<EIP712Domain> TypedData => new()
+    public TypedData<EIP712Domain> TypedData
     {
-        Domain = new EIP712Domain(IsCreate),
-        Types = MemberDescriptionFactory.GetTypesMemberDescription(
-            types: new[] { typeof(EIP712Domain) }
-                .Concat(MembersDescriptionTypes)
-                .ToArray()
-        ),
-        PrimaryType = "SignMessage",
-        Message = MembersValues
-    };
+        get
+        {
+            var typedData = new TypedData<EIP712Domain>
+            {
+                Domain = new EIP712Domain(IsCreate),
+                Types = MemberDescriptionFactory.GetTypesMemberDescription(
+                    types: new[] { typeof(EIP712Domain) }
+                        .Concat(MembersDescriptionTypes)
+                        .ToArray()
+                ),
+                PrimaryType = "SignMessage",
+                Message = MembersValues
+            };
+            typedData.InitDomainRawValues();
+            return typedData;
+        }
+    }
 }

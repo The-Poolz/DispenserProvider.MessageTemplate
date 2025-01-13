@@ -11,6 +11,5 @@ public class AdminRequestValidatorSettings(string nameOfRole, string signature, 
     public AbstractMessage Message { get; } = message;
     public IEnumerable<EthereumAddress> UsersToValidateOrder { get; } = usersToValidateOrder;
 
-    public string RecoveredAddress => new Eip712TypedDataSigner()
-            .RecoverFromSignatureV4(Message, Message.TypedData, Signature);
+    public string RecoveredAddress => new Eip712TypedDataSigner().RecoverFromSignatureV4(Message, Message.TypedData, Signature);
 }

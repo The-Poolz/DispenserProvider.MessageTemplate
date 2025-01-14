@@ -1,22 +1,16 @@
 ﻿using AuthDB;
 using FluentValidation;
-using Net.Web3.EthereumWallet;
 using DispenserProvider.MessageTemplate.Models.Validators;
 
 namespace DispenserProvider.MessageTemplate.Validators;
 
 public class AdminRequestValidator : AbstractValidator<AdminRequestValidatorSettings>
 {
-    public AdminRequestValidator(AuthContext authContext, IValidator<IEnumerable<EthereumAddress>> orderValidator)
+    public AdminRequestValidator(AuthContext authContext)
     {
-        ClassLevelCascadeMode = CascadeMode.Stop;
-
         RuleFor(request => request)
             .Must(request => IsValidAdmin(request, authContext))
             .WithMessage(request => $"Recovered address '{request.RecoveredAddress}' is not '{request.NameOfRole}'.");
-
-        RuleFor(request => request.UsersToValidateOrder)
-            .SetValidator(orderValidator);
     }
 
     private static bool IsValidAdmin(AdminRequestValidatorSettings request, AuthContext authContext) => authContext.Users

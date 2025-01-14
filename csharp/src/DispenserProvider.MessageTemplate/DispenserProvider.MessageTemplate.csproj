@@ -29,9 +29,9 @@
 
   <ItemGroup>
     <PackageReference Include="AuthDB" Version="1.0.7" />
-    <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="Net.Web3.EthereumWallet.Json" Version="1.2.0" />
     <PackageReference Include="Nethereum.Signer.EIP712" Version="4.28.0" />
+    <PackageReference Include="TokenSchedule.FluentValidation" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>

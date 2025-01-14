@@ -2,7 +2,6 @@
 using Nethereum.Signer;
 using Nethereum.ABI.EIP712;
 using Nethereum.Signer.EIP712;
-using Net.Web3.EthereumWallet;
 using ConfiguredSqlConnection.Extensions;
 using DispenserProvider.MessageTemplate.Validators;
 using DispenserProvider.MessageTemplate.Models.Create;
@@ -66,7 +65,6 @@ public class Program
         HandleMessage(
             "CREATE MESSAGE",
             message,
-            message.Users.Select(x => new EthereumAddress(x.UserAddress)),
             authContext
         );
     }
@@ -120,7 +118,6 @@ public class Program
         HandleMessage(
             "CREATE MESSAGE WITH REFUND",
             message,
-            message.Users.Select(x => new EthereumAddress(x.UserAddress)),
             authContext
         );
     }
@@ -140,12 +137,11 @@ public class Program
         HandleMessage(
             "DELETE MESSAGE",
             message,
-            message.Users.Select(x => new EthereumAddress(x)),
             authContext
         );
     }
 
-    private static void HandleMessage(string nameOfOperation, AbstractMessage message, IEnumerable<EthereumAddress> users, AuthContext authContext)
+    private static void HandleMessage(string nameOfOperation, AbstractMessage message, AuthContext authContext)
     {
         Console.WriteLine(new string('=', 64));
         Console.WriteLine(nameOfOperation);
@@ -156,8 +152,8 @@ public class Program
         Console.WriteLine($"GENERATED SIGNATURE: {signature}");
         Console.WriteLine($"DATA: {message.TypedData.ToJson()}");
 
-        var adminRequestValidator = new AdminRequestValidator(authContext, new OrderedUsersValidator());
-        var settings = new AdminRequestValidatorSettings("DispenserAdmin", signature, message, users);
+        var adminRequestValidator = new AdminRequestValidator(authContext);
+        var settings = new AdminRequestValidatorSettings("DispenserAdmin", signature, message);
 
         var validationResult = adminRequestValidator.Validate(settings);
 

@@ -2,20 +2,19 @@
 using Nethereum.Signer;
 using Nethereum.ABI.EIP712;
 using Nethereum.Signer.EIP712;
+using Net.Web3.EthereumWallet;
 using ConfiguredSqlConnection.Extensions;
 using DispenserProvider.MessageTemplate.Validators;
 using DispenserProvider.MessageTemplate.Models.Create;
 using DispenserProvider.MessageTemplate.Models.Delete;
 using DispenserProvider.MessageTemplate.Models.Eip712;
 using DispenserProvider.MessageTemplate.Models.Validators;
-using Net.Web3.EthereumWallet;
 
 namespace DispenserProvider.MessageTemplate.Examples;
 
 public class Program
 {
     public static EthECKey PrivateKey => new("0xe290f27189205c280e53b6194580c24b4fc49c97047b5ffcb62201c4d38feece");
-    public static string PublicAddress = PrivateKey.GetPublicAddress();
 
     private static void Main()
     {

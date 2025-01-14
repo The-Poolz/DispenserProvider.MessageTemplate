@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+csharp/src/DispenserProvider.MessageTemplate.Examples/appsettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

@@ -1,5 +1,7 @@
 # DispenserProvider.MessageTemplate
 
+A library designed to validate requests for creating or deleting a dispenser.
+
 ## Installation
 
 You can install the package via NuGet:

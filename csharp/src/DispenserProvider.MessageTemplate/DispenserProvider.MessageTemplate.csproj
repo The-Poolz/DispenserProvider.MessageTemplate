@@ -16,7 +16,7 @@
     <RepositoryUrl>https://github.com/The-Poolz/DispenserProvider.MessageTemplate/tree/master/csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IncludeSymbols>True</IncludeSymbols>
-    <SymbolPackageFormat>symbols.nupkg</SymbolPackageFormat>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 

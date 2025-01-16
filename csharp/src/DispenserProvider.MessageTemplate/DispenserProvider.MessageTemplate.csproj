@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>DispenserProvider.MessageTemplate</PackageId>
+    <Version>1.0.0</Version>
+    <Company>The-Poolz</Company>
+    <Product>DispenserProvider.MessageTemplate</Product>
+    <Authors>ArdenHide, Lomet</Authors>
+    <Title>A library designed to validate requests for creating or deleting a dispenser.</Title>
+    <Description>A library designed to validate requests for creating or deleting a dispenser.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/The-Poolz/DispenserProvider.MessageTemplate/tree/master/csharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>symbols.nupkg</SymbolPackageFormat>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AuthDB" Version="1.0.7" />
+    <PackageReference Include="Net.Web3.EthereumWallet.Json" Version="1.2.0" />
+    <PackageReference Include="Nethereum.Signer.EIP712" Version="4.28.0" />
+    <PackageReference Include="TokenSchedule.FluentValidation" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

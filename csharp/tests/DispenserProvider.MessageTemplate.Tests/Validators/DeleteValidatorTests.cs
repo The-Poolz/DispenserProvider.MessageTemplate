@@ -15,7 +15,7 @@ public class DeleteValidatorTests
         private readonly DeleteValidator _validator = new(MockAuthContext.Create());
 
         [Fact]
-        internal void WhenCreateMessageIsValid_ShouldWithoutThrownException()
+        internal void WhenDeleteMessageIsValid_ShouldWithoutThrownException()
         {
             var settings = new DeleteValidatorSettings(
                 MockAdminRequestValidatorSettings.Create(

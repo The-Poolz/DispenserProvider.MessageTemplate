@@ -15,6 +15,6 @@ public class OrderedScheduleValidator : AbstractValidator<IEnumerable<IValidated
 
         RuleFor(x => x.ToArray())
             .Must(x => x.OrderBy(item => item.StartDate).SequenceEqual(x))
-            .WithMessage($"Schedule must be sorted in ascending order by {nameof(IValidatedScheduleItem.StartDate)}.");
+            .WithMessage($"Schedule must be sorted in ascending order by '{nameof(IValidatedScheduleItem.StartDate)}'.");
     }
 }

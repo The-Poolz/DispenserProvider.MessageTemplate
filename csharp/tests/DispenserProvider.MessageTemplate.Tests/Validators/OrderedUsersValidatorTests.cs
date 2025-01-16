@@ -20,7 +20,8 @@ public class OrderedUsersValidatorTests
             var testCode = () => _validator.ValidateAndThrow(users);
 
             testCode.Should().Throw<ValidationException>()
-                .WithMessage($"Validation failed: {Environment.NewLine} -- : Collection of users cannot be empty. Severity: Error");
+                .Which.Errors.Should().ContainSingle()
+                .Which.ErrorMessage.Should().Be("Collection of users cannot be empty.");
         }
 
         [Fact]
@@ -34,9 +35,9 @@ public class OrderedUsersValidatorTests
             var testCode = () => _validator.ValidateAndThrow(users);
 
             testCode.Should().Throw<ValidationException>()
-                .WithMessage($"Validation failed: {Environment.NewLine} -- OrderCheck[0]: Addresses must be in ascending order. Found '0x0000000000000000000000000000000000000002' > '0x0000000000000000000000000000000000000001' Severity: Error");
+                .Which.Errors.Should().ContainSingle()
+                .Which.ErrorMessage.Should().Be("Addresses must be in ascending order. Found '0x0000000000000000000000000000000000000002' > '0x0000000000000000000000000000000000000001'.");
         }
-
 
         [Fact]
         internal void WhenCollectionNotUnique_ShouldThrowException()
@@ -49,7 +50,8 @@ public class OrderedUsersValidatorTests
             var testCode = () => _validator.ValidateAndThrow(users);
 
             testCode.Should().Throw<ValidationException>()
-                .WithMessage($"Validation failed: {Environment.NewLine} -- OrderCheck[0]: Duplicate address found: 0x0000000000000000000000000000000000000002 Severity: Error");
+                .Which.Errors.Should().ContainSingle()
+                .Which.ErrorMessage.Should().Be("Duplicate address found: 0x0000000000000000000000000000000000000002.");
         }
 
         [Fact]

@@ -1,7 +1,6 @@
 ﻿using Xunit;
 using FluentAssertions;
 using FluentValidation;
-using Net.Web3.EthereumWallet;
 using DispenserProvider.MessageTemplate.Validators;
 using DispenserProvider.MessageTemplate.Tests.Mocks;
 using DispenserProvider.MessageTemplate.Models.Eip712;
@@ -12,26 +11,23 @@ public class AdminRequestValidatorTests
 {
     public class ValidateAndThrow
     {
-        private readonly AdminRequestValidator _validator = new(
-            MockAuthContext.Create(),
-            new OrderedUsersValidator()
-        );
+        private readonly AdminRequestValidator _validator = new(MockAuthContext.Create());
 
         [Fact]
         internal void WhenNameOfRoleNotMatch_ShouldThrowException()
         {
+            var invalidRoleName = "invalid role name";
             var settings = MockAdminRequestValidatorSettings.Create(
                 message: MockMessages.CreateMessage,
-                nameOfRole: "invalid role name",
-                usersToValidateOrder: MockMessages.CreateMessage.Users.Select(x => new EthereumAddress(x.UserAddress)),
+                nameOfRole: invalidRoleName,
                 privateKey: MockUsers.Admin.PrivateKey
             );
 
             var testCode = () => _validator.ValidateAndThrow(settings);
 
-            testCode.Should()
-                .Throw<ValidationException>()
-                .WithMessage($"Validation failed: {Environment.NewLine} -- : Recovered address '{MockUsers.Admin.Address}' is not 'invalid role name'. Severity: Error");
+            testCode.Should().Throw<ValidationException>()
+                .Which.Errors.Should().ContainSingle()
+                .Which.ErrorMessage.Should().Be($"Recovered address '{MockUsers.Admin.Address}' is not '{invalidRoleName}'.");
         }
 
         [Fact]
@@ -40,60 +36,23 @@ public class AdminRequestValidatorTests
             var settings = MockAdminRequestValidatorSettings.Create(
                 message: MockMessages.CreateMessage,
                 nameOfRole: MockAuthContext.Role.Name,
-                usersToValidateOrder: MockMessages.CreateMessage.Users.Select(x => new EthereumAddress(x.UserAddress)),
                 privateKey: MockUsers.UnauthorizedUser.PrivateKey
             );
 
             var testCode = () => _validator.ValidateAndThrow(settings);
 
-            testCode.Should()
-                .Throw<ValidationException>()
-                .WithMessage($"Validation failed: {Environment.NewLine} -- : Recovered address '{MockUsers.UnauthorizedUser.Address}' is not '{MockAuthContext.Role.Name}'. Severity: Error");
-        }
-
-        [Fact]
-        internal void WhenCollectionIsEmpty_ShouldThrowException()
-        {
-            var settings = MockAdminRequestValidatorSettings.Create(
-                message: MockMessages.CreateMessage,
-                nameOfRole: MockAuthContext.Role.Name,
-                usersToValidateOrder: Array.Empty<EthereumAddress>(),
-                privateKey: MockUsers.Admin.PrivateKey
-            );
-
-            var testCode = () => _validator.ValidateAndThrow(settings);
-
             testCode.Should().Throw<ValidationException>()
-                .WithMessage($"Validation failed: {Environment.NewLine} -- UsersToValidateOrder: Collection of users cannot be empty. Severity: Error");
-        }
-
-        [Fact]
-        internal void WhenCollectionNotSorted_ShouldThrowException()
-        {
-            var settings = MockAdminRequestValidatorSettings.Create(
-                message: MockMessages.CreateMessage,
-                nameOfRole: MockAuthContext.Role.Name,
-                usersToValidateOrder: [
-                    "0x0000000000000000000000000000000000000002",
-                    "0x0000000000000000000000000000000000000001"
-                ],
-                privateKey: MockUsers.Admin.PrivateKey
-            );
-
-            var testCode = () => _validator.ValidateAndThrow(settings);
-
-            testCode.Should().Throw<ValidationException>()
-                .WithMessage($"Validation failed: {Environment.NewLine} -- UsersToValidateOrder.OrderCheck[0]: Addresses must be in ascending order. Found '0x0000000000000000000000000000000000000002' > '0x0000000000000000000000000000000000000001' Severity: Error");
+                .Which.Errors.Should().ContainSingle()
+                .Which.ErrorMessage.Should().Be($"Recovered address '{MockUsers.UnauthorizedUser.Address}' is not '{MockAuthContext.Role.Name}'.");
         }
 
         [Theory]
         [MemberData(nameof(Messages))]
-        internal void WhenRequestIsValid_ShouldWithoutThrownException(AbstractMessage message, IEnumerable<EthereumAddress> users)
+        internal void WhenRequestIsValid_ShouldWithoutThrownException(AbstractMessage message)
         {
             var settings = MockAdminRequestValidatorSettings.Create(
                 message: message,
                 nameOfRole: MockAuthContext.Role.Name,
-                usersToValidateOrder: users,
                 privateKey: MockUsers.Admin.PrivateKey
             );
 
@@ -104,18 +63,9 @@ public class AdminRequestValidatorTests
 
         public static IEnumerable<object[]> Messages =>
         [
-            [
-                MockMessages.CreateMessage,
-                MockMessages.CreateMessage.Users.Select(x => new EthereumAddress(x.UserAddress)).ToArray()
-            ],
-            [
-                MockMessages.CreateMessageWithRefund,
-                MockMessages.CreateMessageWithRefund.Users.Select(x => new EthereumAddress(x.UserAddress)).ToArray()
-            ],
-            [
-                MockMessages.DeleteMessage,
-                MockMessages.DeleteMessage.Users.Select(x => new EthereumAddress(x)).ToArray()
-            ],
+            [MockMessages.CreateMessage],
+            [MockMessages.CreateMessageWithRefund],
+            [MockMessages.DeleteMessage]
         ];
     }
 }

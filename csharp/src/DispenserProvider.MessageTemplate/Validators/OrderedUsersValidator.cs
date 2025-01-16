@@ -26,5 +26,5 @@ public class OrderedUsersValidator : AbstractValidator<IEnumerable<EthereumAddre
         string.Compare(pair.first, pair.second) < 0;
 
     private static string FormatOrderErrorMessage(IEnumerable<EthereumAddress> _, (EthereumAddress first, EthereumAddress second) pair) =>
-        pair.first == pair.second ? $"Duplicate address found: {pair.first}" : $"Addresses must be in ascending order. Found '{pair.first}' > '{pair.second}'";
+        pair.first == pair.second ? $"Duplicate address found: {pair.first}." : $"Addresses must be in ascending order. Found '{pair.first}' > '{pair.second}'.";
 }

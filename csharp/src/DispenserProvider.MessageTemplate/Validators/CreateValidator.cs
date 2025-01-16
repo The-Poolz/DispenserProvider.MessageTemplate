@@ -20,13 +20,13 @@ public class CreateValidator : AbstractValidator<CreateValidatorSettings>
         RuleFor(x => x.AdminRequestValidatorSettings)
             .SetValidator(adminValidator);
 
-        RuleFor(x => x.UsersToValidateOrder)
+        RuleFor(x => x.Users)
             .SetValidator(usersOrderValidator);
 
-        RuleFor(x => x.SchedulesToValidateOrder)
+        RuleFor(x => x.Schedule)
             .SetValidator(scheduleValidator);
 
-        RuleFor(x => x.SchedulesToValidateOrder)
+        RuleFor(x => x.Schedule)
             .SetValidator(scheduleOrderValidator);
     }
 }

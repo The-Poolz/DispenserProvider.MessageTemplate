@@ -7,6 +7,8 @@ public class OrderedScheduleValidator : AbstractValidator<IEnumerable<IValidated
 {
     public OrderedScheduleValidator()
     {
+        ClassLevelCascadeMode = CascadeMode.Stop;
+
         RuleFor(x => x)
             .NotEmpty()
             .WithMessage("Schedule must contain 1 or more elements.");

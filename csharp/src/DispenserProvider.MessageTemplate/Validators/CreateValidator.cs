@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using AuthDB;
+using FluentValidation;
 using Net.Web3.EthereumWallet;
 using TokenSchedule.FluentValidation;
 using TokenSchedule.FluentValidation.Models;
@@ -8,6 +9,15 @@ namespace DispenserProvider.MessageTemplate.Validators;
 
 public class CreateValidator : AbstractValidator<CreateValidatorSettings>
 {
+    public CreateValidator(AuthContext authContext)
+        : this(
+            new AdminRequestValidator(authContext),
+            new OrderedUsersValidator(),
+            new OrderedScheduleValidator(),
+            new ScheduleValidator()
+        )
+    { }
+
     public CreateValidator(
         AdminRequestValidator adminValidator,
         IValidator<IEnumerable<EthereumAddress>> usersOrderValidator,

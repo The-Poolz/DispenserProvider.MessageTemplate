@@ -1,4 +1,5 @@
 ﻿using Nethereum.Signer;
+using Nethereum.ABI.EIP712;
 using Nethereum.Signer.EIP712;
 using DispenserProvider.MessageTemplate.Models.Eip712;
 using DispenserProvider.MessageTemplate.Models.Validators;
@@ -9,7 +10,7 @@ internal static class MockAdminRequestValidatorSettings
 {
     internal static AdminRequestValidatorSettings Create(AbstractMessage message, string nameOfRole, EthECKey privateKey)
     {
-        var signature = new Eip712TypedDataSigner().SignTypedDataV4(message, message.TypedData, privateKey);
+        var signature = new Eip712TypedDataSigner().SignTypedDataV4<EIP712Domain>(message.TypedData.ToJson(), privateKey);
         return new AdminRequestValidatorSettings(nameOfRole, signature, message);
     }
 }

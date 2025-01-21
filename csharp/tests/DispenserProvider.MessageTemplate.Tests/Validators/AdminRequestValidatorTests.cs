@@ -14,28 +14,10 @@ public class AdminRequestValidatorTests
         private readonly AdminRequestValidator _validator = new(new MockAdminValidationService());
 
         [Fact]
-        internal void WhenNameOfRoleNotMatch_ShouldThrowException()
-        {
-            var invalidRoleName = "invalid role name";
-            var settings = MockAdminRequestValidatorSettings.Create(
-                message: MockMessages.CreateMessage,
-                nameOfRole: invalidRoleName,
-                privateKey: MockUsers.Admin.PrivateKey
-            );
-
-            var testCode = () => _validator.ValidateAndThrow(settings);
-
-            testCode.Should().Throw<ValidationException>()
-                .Which.Errors.Should().ContainSingle()
-                .Which.ErrorMessage.Should().Be($"Recovered address '{MockUsers.Admin.Address}' is not '{invalidRoleName}'.");
-        }
-
-        [Fact]
         internal void WhenAddressNotMatch_ShouldThrowException()
         {
             var settings = MockAdminRequestValidatorSettings.Create(
                 message: MockMessages.CreateMessage,
-                nameOfRole: MockAdminValidationService.Role,
                 privateKey: MockUsers.UnauthorizedUser.PrivateKey
             );
 
@@ -43,7 +25,7 @@ public class AdminRequestValidatorTests
 
             testCode.Should().Throw<ValidationException>()
                 .Which.Errors.Should().ContainSingle()
-                .Which.ErrorMessage.Should().Be($"Recovered address '{MockUsers.UnauthorizedUser.Address}' is not '{MockAdminValidationService.Role}'.");
+                .Which.ErrorMessage.Should().Be($"Recovered address '{MockUsers.UnauthorizedUser.Address}' is not valid.");
         }
 
         [Theory]
@@ -52,7 +34,6 @@ public class AdminRequestValidatorTests
         {
             var settings = MockAdminRequestValidatorSettings.Create(
                 message: message,
-                nameOfRole: MockAdminValidationService.Role,
                 privateKey: MockUsers.Admin.PrivateKey
             );
 

@@ -20,7 +20,6 @@ public class DeleteValidatorTests
             var settings = new DeleteValidatorSettings(
                 MockAdminRequestValidatorSettings.Create(
                     message: MockMessages.DeleteMessage,
-                    nameOfRole: MockAdminValidationService.Role,
                     privateKey: MockUsers.Admin.PrivateKey
                 ),
                 users: MockMessages.DeleteMessage.Users.Select(x => new EthereumAddress(x))

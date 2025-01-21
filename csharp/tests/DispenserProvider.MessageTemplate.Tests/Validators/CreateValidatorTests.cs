@@ -23,7 +23,6 @@ public class CreateValidatorTests
             var settings = new CreateValidatorSettings(
                 MockAdminRequestValidatorSettings.Create(
                     message: MockMessages.CreateMessage,
-                    nameOfRole: MockAdminValidationService.Role,
                     privateKey: MockUsers.Admin.PrivateKey
                 ),
                 users: users,

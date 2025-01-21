@@ -9,7 +9,7 @@ public class AdminRequestValidator : AbstractValidator<AdminRequestValidatorSett
     public AdminRequestValidator(IAdminValidationService validationService)
     {
         RuleFor(request => request)
-            .Must(request => validationService.IsValidAdmin(request.RecoveredAddress, request.NameOfRole))
-            .WithMessage(request => $"Recovered address '{request.RecoveredAddress}' is not '{request.NameOfRole}'.");
+            .Must(request => validationService.IsValidAdmin(request.RecoveredAddress))
+            .WithMessage(request => $"Recovered address '{request.RecoveredAddress}' is not valid.");
     }
 }

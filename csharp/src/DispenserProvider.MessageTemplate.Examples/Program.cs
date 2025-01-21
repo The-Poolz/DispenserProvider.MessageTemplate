@@ -152,7 +152,7 @@ public class Program
         Console.WriteLine($"DATA: {message.TypedData.ToJson()}");
 
         var adminRequestValidator = new AdminRequestValidator(validationService);
-        var settings = new AdminRequestValidatorSettings("DispenserAdmin", signature, message);
+        var settings = new AdminRequestValidatorSettings(signature, message);
 
         var validationResult = adminRequestValidator.Validate(settings);
 

@@ -4,9 +4,8 @@ using DispenserProvider.MessageTemplate.Models.Eip712;
 
 namespace DispenserProvider.MessageTemplate.Models.Validators;
 
-public class AdminRequestValidatorSettings(string nameOfRole, string signature, AbstractMessage message)
+public class AdminRequestValidatorSettings(string signature, AbstractMessage message)
 {
-    public string NameOfRole { get; } = nameOfRole;
     public string Signature { get; } = signature;
     public AbstractMessage Message { get; } = message;
 

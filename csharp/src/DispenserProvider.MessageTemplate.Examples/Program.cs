@@ -146,7 +146,7 @@ public class Program
         Console.WriteLine(nameOfOperation);
         Console.WriteLine(new string('=', 64));
 
-        var signature = new Eip712TypedDataSigner().SignTypedDataV4(message.TypedData.ToJson(), PrivateKey);
+        var signature = new Eip712TypedDataSigner().SignTypedDataV4<EIP712Domain>(message.TypedData.ToJson(), PrivateKey);
 
         Console.WriteLine($"GENERATED SIGNATURE: {signature}");
         Console.WriteLine($"DATA: {message.TypedData.ToJson()}");

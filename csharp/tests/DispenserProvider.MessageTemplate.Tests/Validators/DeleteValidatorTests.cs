@@ -12,7 +12,7 @@ public class DeleteValidatorTests
 {
     public class ValidateAndThrow
     {
-        private readonly DeleteValidator _validator = new(MockAuthContext.Create());
+        private readonly DeleteValidator _validator = new(new MockAdminValidationService());
 
         [Fact]
         internal void WhenDeleteMessageIsValid_ShouldWithoutThrownException()
@@ -20,7 +20,7 @@ public class DeleteValidatorTests
             var settings = new DeleteValidatorSettings(
                 MockAdminRequestValidatorSettings.Create(
                     message: MockMessages.DeleteMessage,
-                    nameOfRole: MockAuthContext.Role.Name,
+                    nameOfRole: MockAdminValidationService.Role,
                     privateKey: MockUsers.Admin.PrivateKey
                 ),
                 users: MockMessages.DeleteMessage.Users.Select(x => new EthereumAddress(x))

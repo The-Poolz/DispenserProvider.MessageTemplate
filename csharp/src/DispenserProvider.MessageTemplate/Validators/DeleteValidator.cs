@@ -1,15 +1,15 @@
-﻿using AuthDB;
-using FluentValidation;
+﻿using FluentValidation;
 using Net.Web3.EthereumWallet;
 using DispenserProvider.MessageTemplate.Models.Validators;
+using DispenserProvider.MessageTemplate.Services;
 
 namespace DispenserProvider.MessageTemplate.Validators;
 
 public class DeleteValidator : AbstractValidator<DeleteValidatorSettings>
 {
-    public DeleteValidator(AuthContext authContext)
+    public DeleteValidator(IAdminValidationService validationService)
         : this(
-            new AdminRequestValidator(authContext),
+            new AdminRequestValidator(validationService),
             new OrderedUsersValidator()
         )
     { }

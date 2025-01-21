@@ -11,7 +11,7 @@ public class AdminRequestValidatorTests
 {
     public class ValidateAndThrow
     {
-        private readonly AdminRequestValidator _validator = new(MockAuthContext.Create());
+        private readonly AdminRequestValidator _validator = new(new MockAdminValidationService());
 
         [Fact]
         internal void WhenNameOfRoleNotMatch_ShouldThrowException()
@@ -43,7 +43,7 @@ public class AdminRequestValidatorTests
 
             testCode.Should().Throw<ValidationException>()
                 .Which.Errors.Should().ContainSingle()
-                .Which.ErrorMessage.Should().Be($"Recovered address '{MockUsers.UnauthorizedUser.Address}' is not '{MockAuthContext.Role.Name}'.");
+                .Which.ErrorMessage.Should().Be($"Recovered address '{MockUsers.UnauthorizedUser.Address}' is not '{MockAdminValidationService.Role}'.");
         }
 
         [Theory]

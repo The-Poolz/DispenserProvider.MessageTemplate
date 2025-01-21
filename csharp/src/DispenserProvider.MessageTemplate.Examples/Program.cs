@@ -1,8 +1,7 @@
-﻿using AuthDB;
-using Nethereum.Signer;
+﻿using Nethereum.Signer;
 using Nethereum.ABI.EIP712;
 using Nethereum.Signer.EIP712;
-using ConfiguredSqlConnection.Extensions;
+using DispenserProvider.MessageTemplate.Services;
 using DispenserProvider.MessageTemplate.Validators;
 using DispenserProvider.MessageTemplate.Models.Create;
 using DispenserProvider.MessageTemplate.Models.Delete;
@@ -17,13 +16,13 @@ public class Program
 
     private static void Main()
     {
-        using var authContext = new DbContextFactory<AuthContext>().Create(ContextOption.Staging, "AuthStage");
-        CreateMessage(authContext);
-        CreateMessageWithRefund(authContext);
-        DeleteMessage(authContext);
+        var validationService = new MockAdminValidationService();
+        CreateMessage(validationService);
+        CreateMessageWithRefund(validationService);
+        DeleteMessage(validationService);
     }
 
-    private static void CreateMessage(AuthContext authContext)
+    private static void CreateMessage(IAdminValidationService validationService)
     {
         var message = new CreateMessage(
             chainId: 1,
@@ -65,11 +64,11 @@ public class Program
         HandleMessage(
             "CREATE MESSAGE",
             message,
-            authContext
+            validationService
         );
     }
 
-    private static void CreateMessageWithRefund(AuthContext authContext)
+    private static void CreateMessageWithRefund(IAdminValidationService validationService)
     {
         var message = new CreateMessageWithRefund(
             chainId: 1,
@@ -118,11 +117,11 @@ public class Program
         HandleMessage(
             "CREATE MESSAGE WITH REFUND",
             message,
-            authContext
+            validationService
         );
     }
 
-    private static void DeleteMessage(AuthContext authContext)
+    private static void DeleteMessage(IAdminValidationService validationService)
     {
         var message = new DeleteMessage(
             chainId: 1,
@@ -137,22 +136,22 @@ public class Program
         HandleMessage(
             "DELETE MESSAGE",
             message,
-            authContext
+            validationService
         );
     }
 
-    private static void HandleMessage(string nameOfOperation, AbstractMessage message, AuthContext authContext)
+    private static void HandleMessage(string nameOfOperation, AbstractMessage message, IAdminValidationService validationService)
     {
         Console.WriteLine(new string('=', 64));
         Console.WriteLine(nameOfOperation);
         Console.WriteLine(new string('=', 64));
 
-        var signature = new Eip712TypedDataSigner().SignTypedDataV4(message, message.TypedData, PrivateKey);
+        var signature = new Eip712TypedDataSigner().SignTypedDataV4(message.TypedData.ToJson(), PrivateKey);
 
         Console.WriteLine($"GENERATED SIGNATURE: {signature}");
         Console.WriteLine($"DATA: {message.TypedData.ToJson()}");
 
-        var adminRequestValidator = new AdminRequestValidator(authContext);
+        var adminRequestValidator = new AdminRequestValidator(validationService);
         var settings = new AdminRequestValidatorSettings("DispenserAdmin", signature, message);
 
         var validationResult = adminRequestValidator.Validate(settings);

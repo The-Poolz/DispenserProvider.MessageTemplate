@@ -35,7 +35,7 @@ public class AdminRequestValidatorTests
         {
             var settings = MockAdminRequestValidatorSettings.Create(
                 message: MockMessages.CreateMessage,
-                nameOfRole: MockAuthContext.Role.Name,
+                nameOfRole: MockAdminValidationService.Role,
                 privateKey: MockUsers.UnauthorizedUser.PrivateKey
             );
 
@@ -52,7 +52,7 @@ public class AdminRequestValidatorTests
         {
             var settings = MockAdminRequestValidatorSettings.Create(
                 message: message,
-                nameOfRole: MockAuthContext.Role.Name,
+                nameOfRole: MockAdminValidationService.Role,
                 privateKey: MockUsers.Admin.PrivateKey
             );
 

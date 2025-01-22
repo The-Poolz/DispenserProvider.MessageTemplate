@@ -1,17 +1,17 @@
-﻿using AuthDB;
-using FluentValidation;
+﻿using FluentValidation;
 using Net.Web3.EthereumWallet;
 using TokenSchedule.FluentValidation;
 using TokenSchedule.FluentValidation.Models;
 using DispenserProvider.MessageTemplate.Models.Validators;
+using DispenserProvider.MessageTemplate.Services;
 
 namespace DispenserProvider.MessageTemplate.Validators;
 
 public class CreateValidator : AbstractValidator<CreateValidatorSettings>
 {
-    public CreateValidator(AuthContext authContext)
+    public CreateValidator(IAdminValidationService validationService)
         : this(
-            new AdminRequestValidator(authContext),
+            new AdminRequestValidator(validationService),
             new OrderedUsersValidator(),
             new OrderedScheduleValidator(),
             new ScheduleValidator()

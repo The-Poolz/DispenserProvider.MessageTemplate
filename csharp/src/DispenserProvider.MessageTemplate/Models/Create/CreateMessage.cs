@@ -14,10 +14,10 @@ public class CreateMessage(long chainId, long poolId, IEnumerable<Schedule> sche
     [Parameter(type: "uint256", name: "poolId", order: 2)]
     public BigInteger PoolId { get; } = poolId;
 
-    [Parameter(type: "tuple[]", name: "schedules", order: 3, structTypeName: "Schedule[]")]
+    [Parameter(type: "tuple[]", name: "schedules", order: 3, structTypeName: "schedules[]")]
     public Schedule[] Schedules { get; } = schedules.ToArray();
 
-    [Parameter(type: "tuple[]", name: "users", order: 4, structTypeName: "User[]")]
+    [Parameter(type: "tuple[]", name: "users", order: 4, structTypeName: "users[]")]
     public User[] Users { get; } = users.ToArray();
 
     protected override bool IsCreate => true;

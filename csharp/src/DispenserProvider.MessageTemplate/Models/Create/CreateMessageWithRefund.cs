@@ -7,7 +7,7 @@ namespace DispenserProvider.MessageTemplate.Models.Create;
 public class CreateMessageWithRefund(long chainId, long poolId, IEnumerable<Schedule> schedules, IEnumerable<User> users, Refund refund)
     : CreateMessage(chainId, poolId, schedules, users)
 {
-    [Parameter(type: "tuple", name: "refund", order: 5, structTypeName: "Refund")]
+    [Parameter(type: "tuple", name: "refund", order: 5, structTypeName: "refund")]
     public Refund Refund { get; } = refund;
 
     protected override Type[] MembersDescriptionTypes => [typeof(CreateMessageWithRefund), typeof(Schedule), typeof(User), typeof(Refund)];

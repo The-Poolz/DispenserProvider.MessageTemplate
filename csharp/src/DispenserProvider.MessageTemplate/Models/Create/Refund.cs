@@ -5,7 +5,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 
 namespace DispenserProvider.MessageTemplate.Models.Create;
 
-[Struct(name: "Refund")]
+[Struct(name: "refund")]
 public class Refund(long chainId, long poolId, string ratio, EthereumAddress dealProvider, long finishTime)
 {
     public Refund(long chainId, long poolId, string ratio, EthereumAddress dealProvider, DateTime finishTime)
@@ -18,8 +18,8 @@ public class Refund(long chainId, long poolId, string ratio, EthereumAddress dea
     [Parameter(type: "uint256", name: "poolId", order: 2)]
     public BigInteger PoolId { get; } = poolId;
 
-    [Parameter(type: "uint256", name: "ratio", order: 3)]
-    public BigInteger Ratio { get; } = BigInteger.Parse(ratio);
+    [Parameter(type: "string", name: "weiRatio", order: 3)]
+    public string Ratio { get; } = ratio;
 
     [Parameter(type: "address", name: "dealProvider", order: 4)]
     public string DealProvider { get; } = dealProvider;

@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>DispenserProvider.MessageTemplate</PackageId>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Company>The-Poolz</Company>
     <Product>DispenserProvider.MessageTemplate</Product>
     <Authors>ArdenHide, Lomet</Authors>
@@ -30,7 +30,7 @@
   <ItemGroup>
     <PackageReference Include="Net.Web3.EthereumWallet" Version="1.2.0" />
     <PackageReference Include="Nethereum.Signer.EIP712" Version="4.28.0" />
-    <PackageReference Include="TokenSchedule.FluentValidation" Version="1.1.1" />
+    <PackageReference Include="TokenSchedule.FluentValidation" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>

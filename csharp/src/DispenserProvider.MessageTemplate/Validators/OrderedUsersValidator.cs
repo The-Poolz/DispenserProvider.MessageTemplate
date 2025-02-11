@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Net.Web3.EthereumWallet;
+using Net.Utils.ErrorHandler.Extensions;
 
 namespace DispenserProvider.MessageTemplate.Validators;
 
@@ -11,20 +12,19 @@ public class OrderedUsersValidator : AbstractValidator<IEnumerable<EthereumAddre
 
         RuleFor(users => users)
             .NotEmpty()
-            .WithMessage("Collection of users cannot be empty.");
+            .WithError(Error.USERS_COLLECTION_IS_EMPTY);
 
         RuleForEach(users => GetZippedPairs(users.ToArray()))
-            .Configure(config => config.PropertyName = "OrderCheck")
-            .Must(IsSorted)
-            .WithMessage(FormatOrderErrorMessage);
+            .Configure(config => config.PropertyName = "Users")
+            .Must(pair => !pair.Item1.Equals(pair.Item2))
+            .WithError(Error.USERS_COLLECTION_CONTAIN_DUPLICATES);
+
+        RuleForEach(users => GetZippedPairs(users.ToArray()))
+            .Configure(config => config.PropertyName = "Users")
+            .Must(pair => string.Compare(pair.Item1, pair.Item2) <= 0)
+            .WithError(Error.USERS_COLLECTION_MUST_BE_SORTED);
     }
 
     private static IEnumerable<(EthereumAddress, EthereumAddress)> GetZippedPairs(EthereumAddress[] users) =>
         users.Zip(users.Skip(1));
-
-    private static bool IsSorted((EthereumAddress first, EthereumAddress second) pair) =>
-        string.Compare(pair.first, pair.second) < 0;
-
-    private static string FormatOrderErrorMessage(IEnumerable<EthereumAddress> _, (EthereumAddress first, EthereumAddress second) pair) =>
-        pair.first == pair.second ? $"Duplicate address found: {pair.first}." : $"Addresses must be in ascending order. Found '{pair.first}' > '{pair.second}'.";
 }

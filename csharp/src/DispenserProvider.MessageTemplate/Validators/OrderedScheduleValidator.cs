@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Net.Utils.ErrorHandler.Extensions;
 using TokenSchedule.FluentValidation.Models;
 
 namespace DispenserProvider.MessageTemplate.Validators;
@@ -11,10 +12,10 @@ public class OrderedScheduleValidator : AbstractValidator<IEnumerable<IValidated
 
         RuleFor(x => x)
             .NotEmpty()
-            .WithMessage("Schedule must contain 1 or more elements.");
+            .WithError(Error.SCHEDULE_IS_EMPTY);
 
         RuleFor(x => x.ToArray())
             .Must(x => x.OrderBy(item => item.StartDate).SequenceEqual(x))
-            .WithMessage($"Schedule must be sorted in ascending order by '{nameof(IValidatedScheduleItem.StartDate)}'.");
+            .WithError(Error.SCHEDULE_MUST_BE_SORTED);
     }
 }

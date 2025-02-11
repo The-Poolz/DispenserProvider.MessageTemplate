@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Net.Utils.ErrorHandler.Extensions;
 using DispenserProvider.MessageTemplate.Services;
 using DispenserProvider.MessageTemplate.Models.Validators;
 
@@ -10,6 +11,10 @@ public class AdminRequestValidator : AbstractValidator<AdminRequestValidatorSett
     {
         RuleFor(request => request)
             .Must(request => validationService.IsValidAdmin(request.RecoveredAddress))
-            .WithMessage(request => $"Recovered address '{request.RecoveredAddress}' is not valid.");
+            .WithError(Error.RECOVERED_ADDRESS_IS_INVALID)
+            .WithState(request => new
+            {
+                request.RecoveredAddress
+            });
     }
 }

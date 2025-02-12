@@ -17,10 +17,7 @@ public class OrderedUsersValidator : AbstractValidator<IEnumerable<EthereumAddre
         RuleForEach(users => GetZippedPairs(users.ToArray()))
             .Configure(config => config.PropertyName = "Users")
             .Must(pair => !pair.Item1.Equals(pair.Item2))
-            .WithError(Error.USERS_COLLECTION_CONTAIN_DUPLICATES);
-
-        RuleForEach(users => GetZippedPairs(users.ToArray()))
-            .Configure(config => config.PropertyName = "Users")
+            .WithError(Error.USERS_COLLECTION_CONTAIN_DUPLICATES)
             .Must(pair => string.Compare(pair.Item1, pair.Item2) <= 0)
             .WithError(Error.USERS_COLLECTION_MUST_BE_SORTED);
     }

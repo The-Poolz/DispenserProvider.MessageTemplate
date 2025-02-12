@@ -20,7 +20,8 @@ public class OrderedUsersValidatorTests
             var testCode = () => _validator.ValidateAndThrow(users);
 
             testCode.Should().Throw<ValidationException>()
-                .Which.Errors.Should().ContainSingle()
+                .Which.Errors.Should().HaveCount(1)
+                .And.ContainSingle()
                 .Which.Should().BeEquivalentTo(new
                 {
                     ErrorCode = "USERS_COLLECTION_IS_EMPTY",
@@ -39,7 +40,8 @@ public class OrderedUsersValidatorTests
             var testCode = () => _validator.ValidateAndThrow(users);
 
             testCode.Should().Throw<ValidationException>()
-                .Which.Errors.Should().ContainSingle()
+                .Which.Errors.Should().HaveCount(1)
+                .And.ContainSingle()
                 .Which.Should().BeEquivalentTo(new
                 {
                     ErrorCode = "USERS_COLLECTION_MUST_BE_SORTED",
@@ -58,12 +60,36 @@ public class OrderedUsersValidatorTests
             var testCode = () => _validator.ValidateAndThrow(users);
 
             testCode.Should().Throw<ValidationException>()
-                .Which.Errors.Should().ContainSingle()
+                .Which.Errors.Should().HaveCount(1)
+                .And.ContainSingle()
                 .Which.Should().BeEquivalentTo(new
                 {
                     ErrorCode = "USERS_COLLECTION_CONTAIN_DUPLICATES",
                     ErrorMessage = "Collection of users contain duplicates."
                 });
+        }
+
+        [Fact]
+        internal void WhenCollectionNotUniqueAndNotSorted_ShouldThrowException()
+        {
+            var users = new EthereumAddress[] {
+                "0x0000000000000000000000000000000000000002",
+                "0x0000000000000000000000000000000000000002",
+                "0x0000000000000000000000000000000000000001"
+            };
+
+            var testCode = () => _validator.ValidateAndThrow(users);
+
+            testCode.Should().Throw<ValidationException>()
+                .Which.Errors.Should().HaveCount(2)
+                .And.Contain(x =>
+                    x.ErrorCode == "USERS_COLLECTION_CONTAIN_DUPLICATES" &&
+                    x.ErrorMessage == "Collection of users contain duplicates."
+                )
+                .And.Contain(x =>
+                    x.ErrorCode == "USERS_COLLECTION_MUST_BE_SORTED" &&
+                    x.ErrorMessage == "Collection of users must be sorted by ascending."
+                );
         }
 
         [Fact]

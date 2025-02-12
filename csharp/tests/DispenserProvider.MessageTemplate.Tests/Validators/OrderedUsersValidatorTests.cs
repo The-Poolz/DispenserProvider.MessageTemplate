@@ -20,8 +20,13 @@ public class OrderedUsersValidatorTests
             var testCode = () => _validator.ValidateAndThrow(users);
 
             testCode.Should().Throw<ValidationException>()
-                .Which.Errors.Should().ContainSingle()
-                .Which.ErrorMessage.Should().Be("Collection of users cannot be empty.");
+                .Which.Errors.Should().HaveCount(1)
+                .And.ContainSingle()
+                .Which.Should().BeEquivalentTo(new
+                {
+                    ErrorCode = "USERS_COLLECTION_IS_EMPTY",
+                    ErrorMessage = "Collection of users must contain 1 or more elements."
+                });
         }
 
         [Fact]
@@ -35,8 +40,13 @@ public class OrderedUsersValidatorTests
             var testCode = () => _validator.ValidateAndThrow(users);
 
             testCode.Should().Throw<ValidationException>()
-                .Which.Errors.Should().ContainSingle()
-                .Which.ErrorMessage.Should().Be("Addresses must be in ascending order. Found '0x0000000000000000000000000000000000000002' > '0x0000000000000000000000000000000000000001'.");
+                .Which.Errors.Should().HaveCount(1)
+                .And.ContainSingle()
+                .Which.Should().BeEquivalentTo(new
+                {
+                    ErrorCode = "USERS_COLLECTION_MUST_BE_SORTED",
+                    ErrorMessage = "Collection of users must be sorted by ascending."
+                });
         }
 
         [Fact]
@@ -50,8 +60,36 @@ public class OrderedUsersValidatorTests
             var testCode = () => _validator.ValidateAndThrow(users);
 
             testCode.Should().Throw<ValidationException>()
-                .Which.Errors.Should().ContainSingle()
-                .Which.ErrorMessage.Should().Be("Duplicate address found: 0x0000000000000000000000000000000000000002.");
+                .Which.Errors.Should().HaveCount(1)
+                .And.ContainSingle()
+                .Which.Should().BeEquivalentTo(new
+                {
+                    ErrorCode = "USERS_COLLECTION_CONTAIN_DUPLICATES",
+                    ErrorMessage = "Collection of users contain duplicates."
+                });
+        }
+
+        [Fact]
+        internal void WhenCollectionNotUniqueAndNotSorted_ShouldThrowException()
+        {
+            var users = new EthereumAddress[] {
+                "0x0000000000000000000000000000000000000002",
+                "0x0000000000000000000000000000000000000002",
+                "0x0000000000000000000000000000000000000001"
+            };
+
+            var testCode = () => _validator.ValidateAndThrow(users);
+
+            testCode.Should().Throw<ValidationException>()
+                .Which.Errors.Should().HaveCount(2)
+                .And.Contain(x =>
+                    x.ErrorCode == "USERS_COLLECTION_CONTAIN_DUPLICATES" &&
+                    x.ErrorMessage == "Collection of users contain duplicates."
+                )
+                .And.Contain(x =>
+                    x.ErrorCode == "USERS_COLLECTION_MUST_BE_SORTED" &&
+                    x.ErrorMessage == "Collection of users must be sorted by ascending."
+                );
         }
 
         [Fact]

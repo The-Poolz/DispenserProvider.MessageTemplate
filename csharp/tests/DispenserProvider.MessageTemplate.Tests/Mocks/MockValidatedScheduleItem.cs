@@ -18,6 +18,10 @@ public class MockValidatedScheduleItem(decimal ratio, DateTime startDate, DateTi
         )
     { }
 
+    public MockValidatedScheduleItem(string ratio, BigInteger startDate, BigInteger finishDate)
+        : this(BigInteger.Parse(ratio), startDate, finishDate)
+    { }
+
     public decimal Ratio { get; } = ratio;
     public DateTime StartDate { get; } = startDate;
     public DateTime? FinishDate { get; } = finishDate;

@@ -29,8 +29,8 @@ public class OrderedScheduleValidatorTests
         internal void WhenCollectionNotSorted_ShouldThrowException()
         {
             var schedule = new MockValidatedScheduleItem[] {
-                new(0.5m, 170000, 0),
-                new(0.5m, 160000, 0)
+                new(500000000000000000, 170000, 0),
+                new(500000000000000000, 160000, 0)
             };
 
             var testCode = () => _validator.ValidateAndThrow(schedule);
@@ -44,8 +44,8 @@ public class OrderedScheduleValidatorTests
         internal void WhenCollectionNotUnique_ShouldThrowException()
         {
             var schedule = new MockValidatedScheduleItem[] {
-                new(0.5m, 170000, 0),
-                new(0.5m, 170000, 0)
+                new(500000000000000000, 170000, 0),
+                new(500000000000000000, 170000, 0)
             };
 
             var testCode = () => _validator.ValidateAndThrow(schedule);
@@ -57,8 +57,8 @@ public class OrderedScheduleValidatorTests
         internal void WhenCollectionSortedRight_ShouldNotThrowException()
         {
             var schedule = new MockValidatedScheduleItem[] {
-                new(0.5m, 160000, 0),
-                new(0.5m, 170000, 190000)
+                new(500000000000000000, 160000, 0),
+                new(500000000000000000, 170000, 190000)
             };
 
             var testCode = () => _validator.ValidateAndThrow(schedule);

@@ -2,8 +2,8 @@
 using Net.Web3.EthereumWallet;
 using TokenSchedule.FluentValidation;
 using TokenSchedule.FluentValidation.Models;
-using DispenserProvider.MessageTemplate.Models.Validators;
 using DispenserProvider.MessageTemplate.Services;
+using DispenserProvider.MessageTemplate.Models.Validators;
 
 namespace DispenserProvider.MessageTemplate.Validators;
 

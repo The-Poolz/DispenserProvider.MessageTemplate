@@ -27,18 +27,18 @@ const typedData = {
     ],
     schedules: [
       { name: "providerAddress", type: "address" },
-      { name: "weiRatio", type: "string" },
+      { name: "weiRatio", type: "uint256" },
       { name: "startTime", type: "uint256" },
       { name: "finishTime", type: "uint256" },
     ],
     users: [
       { name: "userAddress", type: "address" },
-      { name: "weiAmount", type: "string" },
+      { name: "weiAmount", type: "uint256" },
     ],
     refund: [
       { name: "chainId", type: "uint256" },
       { name: "poolId", type: "uint256" },
-      { name: "weiRatio", type: "string" },
+      { name: "weiRatio", type: "uint256" },
       { name: "dealProvider", type: "address" },
       { name: "finishTime", type: "uint256" },
     ],
@@ -105,13 +105,13 @@ const typedData = {
     ],
     schedules: [
       { name: "providerAddress", type: "address" },
-      { name: "weiRatio", type: "string" },
+      { name: "weiRatio", type: "uint256" },
       { name: "startTime", type: "uint256" },
       { name: "finishTime", type: "uint256" },
     ],
     users: [
       { name: "userAddress", type: "address" },
-      { name: "weiAmount", type: "string" },
+      { name: "weiAmount", type: "uint256" },
     ],
   },
   primaryType: "SignMessage",

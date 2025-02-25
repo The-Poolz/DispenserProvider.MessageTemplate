@@ -39,12 +39,12 @@ public class CreateValidatorTests
             [
                 MockMessages.CreateMessage,
                 MockMessages.CreateMessage.Users.Select(x => new EthereumAddress(x.UserAddress)),
-                MockMessages.CreateMessage.Schedules.Select(x => new MockValidatedScheduleItem(x.Ratio, x.StartDate, x.FinishDate))
+                MockMessages.CreateMessage.Schedules.Select(x => new MockValidatedScheduleItem(x.WeiRatio, x.StartDate, x.FinishDate))
             ],
             [
                 MockMessages.CreateMessageWithRefund,
                 MockMessages.CreateMessageWithRefund.Users.Select(x => new EthereumAddress(x.UserAddress)),
-                MockMessages.CreateMessageWithRefund.Schedules.Select(x => new MockValidatedScheduleItem(x.Ratio, x.StartDate, x.FinishDate))
+                MockMessages.CreateMessageWithRefund.Schedules.Select(x => new MockValidatedScheduleItem(x.WeiRatio, x.StartDate, x.FinishDate))
             ]
         ];
     }

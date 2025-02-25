@@ -1,4 +1,5 @@
-﻿using Nethereum.Signer;
+﻿using System.Numerics;
+using Nethereum.Signer;
 using Nethereum.ABI.EIP712;
 using Nethereum.Signer.EIP712;
 using DispenserProvider.MessageTemplate.Services;
@@ -31,19 +32,19 @@ public class Program
             [
                 new Schedule(
                     providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-                    ratio: "500000000000000000",
+                    weiRatio: 500000000000000000,
                     startDate: 0,
                     finishDate: 0
                 ),
                 new Schedule(
                     providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-                    ratio: "300000000000000000",
+                    weiRatio: 300000000000000000,
                     startDate: 0,
                     finishDate: 0
                 ),
                 new Schedule(
                     providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-                    ratio: "200000000000000000",
+                    weiRatio: 200000000000000000,
                     startDate: 0,
                     finishDate: 1763758800
                 )
@@ -52,11 +53,11 @@ public class Program
             [
                 new User(
                     userAddress: "0x0000000000000000000000000000000000000001",
-                    weiAmount: "50000000000000000000"
+                    weiAmount: BigInteger.Parse("50000000000000000000")
                 ),
                 new User(
                     userAddress: "0x0000000000000000000000000000000000000002",
-                    weiAmount: "25000000000000000000"
+                    weiAmount: BigInteger.Parse("25000000000000000000")
                 )
             ]
         );
@@ -77,19 +78,19 @@ public class Program
             [
                 new Schedule(
                     providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-                    ratio: "500000000000000000",
+                    weiRatio: 500000000000000000,
                     startDate: 0,
                     finishDate: 0
                 ),
                 new Schedule(
                     providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-                    ratio: "300000000000000000",
+                    weiRatio: 300000000000000000,
                     startDate: 0,
                     finishDate: 0
                 ),
                 new Schedule(
                     providerAddress: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-                    ratio: "200000000000000000",
+                    weiRatio: 200000000000000000,
                     startDate: 0,
                     finishDate: 1763758800
                 )
@@ -98,11 +99,11 @@ public class Program
             [
                 new User(
                     userAddress: "0x0000000000000000000000000000000000000001",
-                    weiAmount: "50000000000000000000"
+                    weiAmount: BigInteger.Parse("50000000000000000000")
                 ),
                 new User(
                     userAddress: "0x0000000000000000000000000000000000000002",
-                    weiAmount: "25000000000000000000"
+                    weiAmount: BigInteger.Parse("25000000000000000000")
                 )
             ],
             refund: new Refund(

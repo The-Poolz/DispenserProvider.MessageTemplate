@@ -109,7 +109,7 @@ public class Program
             refund: new Refund(
                 chainId: 56,
                 poolId: 1,
-                ratio: "800000000000000000",
+                weiRatio: 800000000000000000,
                 dealProvider: "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
                 finishTime: 1763544530
             )

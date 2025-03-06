@@ -6,9 +6,9 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 namespace DispenserProvider.MessageTemplate.Models.Create;
 
 [Struct(name: "refund")]
-public class Refund(long chainId, long poolId, long weiRatio, EthereumAddress dealProvider, long finishTime)
+public class Refund(long chainId, long poolId, BigInteger weiRatio, EthereumAddress dealProvider, long finishTime)
 {
-    public Refund(long chainId, long poolId, long weiRatio, EthereumAddress dealProvider, DateTime finishTime)
+    public Refund(long chainId, long poolId, BigInteger weiRatio, EthereumAddress dealProvider, DateTime finishTime)
         : this(chainId, poolId, weiRatio, dealProvider, finishTime.ToUnixTimestamp())
     { }
 

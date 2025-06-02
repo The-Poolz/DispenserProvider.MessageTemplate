@@ -11,6 +11,6 @@ internal static class MockAdminRequestValidatorSettings
     internal static AdminRequestValidatorSettings Create(AbstractMessage message, EthECKey privateKey)
     {
         var signature = new Eip712TypedDataSigner().SignTypedDataV4<EIP712Domain>(message.TypedData.ToJson(), privateKey);
-        return new AdminRequestValidatorSettings(signature, message);
+        return new AdminRequestValidatorSettings(signature, message, []);
     }
 }

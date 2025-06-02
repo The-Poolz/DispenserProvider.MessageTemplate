@@ -10,7 +10,7 @@ public class AdminRequestValidator : AbstractValidator<AdminRequestValidatorSett
     public AdminRequestValidator(IAdminValidationService validationService)
     {
         RuleFor(request => request)
-            .Must(request => validationService.IsValidAdmin(request.RecoveredAddress))
+            .Must(request => validationService.IsValidAdmin(request.RecoveredAddress, request.ChainIDs))
             .WithError(Error.RECOVERED_ADDRESS_IS_INVALID)
             .WithState(request => new
             {

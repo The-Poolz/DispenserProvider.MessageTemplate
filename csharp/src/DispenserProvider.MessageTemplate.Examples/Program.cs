@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Nethereum.Signer;
 using Nethereum.ABI.EIP712;
 using Nethereum.Signer.EIP712;
 using DispenserProvider.MessageTemplate.Services;
@@ -13,8 +12,6 @@ namespace DispenserProvider.MessageTemplate.Examples;
 
 public class Program
 {
-    public static EthECKey PrivateKey => new("0xe290f27189205c280e53b6194580c24b4fc49c97047b5ffcb62201c4d38feece");
-
     private static void Main()
     {
         var validationService = new MockAdminValidationService();
@@ -147,13 +144,13 @@ public class Program
         Console.WriteLine(nameOfOperation);
         Console.WriteLine(new string('=', 64));
 
-        var signature = new Eip712TypedDataSigner().SignTypedDataV4<EIP712Domain>(message.TypedData.ToJson(), PrivateKey);
+        var signature = new Eip712TypedDataSigner().SignTypedDataV4<EIP712Domain>(message.TypedData.ToJson(), MockAdminValidationService.AdminPrivateKey);
 
         Console.WriteLine($"GENERATED SIGNATURE: {signature}");
         Console.WriteLine($"DATA: {message.TypedData.ToJson()}");
 
         var adminRequestValidator = new AdminRequestValidator(validationService);
-        var settings = new AdminRequestValidatorSettings(signature, message);
+        var settings = new AdminRequestValidatorSettings(signature, message, []);
 
         var validationResult = adminRequestValidator.Validate(settings);
 

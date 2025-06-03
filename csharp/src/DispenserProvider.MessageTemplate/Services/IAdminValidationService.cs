@@ -2,5 +2,5 @@
 
 public interface IAdminValidationService
 {
-    public bool IsValidAdmin(string userAddress, IEnumerable<long> chainIDs);
+    public bool IsValidAdmin(string userAddress, IReadOnlyCollection<long> chainIDs);
 }
